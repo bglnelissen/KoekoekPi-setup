@@ -533,14 +533,16 @@ sudo -u server mkdir -p /media/KoekoekPi/Torrent/Incomplete
 sudo service transmission-daemon stop
 
 # change tmp/download dir in settings file
+#   "blocklist-enabled": true, 
+#   "blocklist-url": "http://list.iblocklist.com/?list=bt_level1",
 #   "download-dir": "/media/KoekoekPi/Torrent/Complete",
 #   "incomplete-dir": "/media/KoekoekPi/Torrent/Incomplete",
 #   "rpc-authentication-required": false,
 #   "rpc-whitelist": "127.0.0.1,10.0.*.*,192.168.*.*",
 sudo vim /var/lib/transmission-daemon/info/settings.json
 
-# change the user that runs the transmission-deamon
-#   USER=server
+# change the user:group that runs the transmission-deamon
+#   USER=server:server
 # this might not work as expected... TODO
 sudo vim /etc/init.d/transmission-daemon
 
