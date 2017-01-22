@@ -430,7 +430,7 @@ Download ownCloud and move it to `www`
 sudo su server
 
 # Check https://owncloud.org/install/#edition for the latest and greatest
-wget https://download.owncloud.org/community/owncloud-9.1.3.tar.bz2
+cd ~/ && wget https://download.owncloud.org/community/owncloud-9.1.3.tar.bz2
 
 # extract
 tar jxfv owncloud-9.1.3.tar.bz2
@@ -461,7 +461,39 @@ Setup ownCloud web-configuration and ownCloud should be up and running.
 # data [/media/KoekoekPi/owncloud]
 ```
 
----
+#### phpMyAdmin
+
+Download phpMyAdmin and add it to 'www'
+
+```
+# login as 'server'
+sudo su server
+
+# Check https://www.phpmyadmin.net/downloads/ for the latest and greatest
+cd ~/ && wget https://files.phpmyadmin.net/phpMyAdmin/4.6.5.2/phpMyAdmin-4.6.5.2-english.tar.bz2
+
+# extract and delete tar
+tar jxfv phpMyAdmin-4.6.5.2-english.tar.bz2 && rm phpMyAdmin-4.6.5.2-english.tar.bz2
+
+# move 'phpMyAdmin' to 'www'
+mv phpMyAdmin-4.6.5.2-english ~/www/phpmyadmin
+
+# create a cookie blowfish secret
+cd ~/www/phpmyadmin/ && cp config.sample.inc.php config.inc.php
+
+# edit the blowfish_secret in config.inc.php
+#   $cfg['blowfish_secret'] = 'superrandomgibrish@$#^%SDFGASDF@#$';
+vim config.inc.php
+```
+
+Setup phpMyAdmin web-configuration (https://guu.st/phpmyadmin), login with root.
+
+Create a new database user named server
+
+1. Go to home
+2. User accounts
+3. 'Add user account'
+4. User name 'server', Host name 'localhost', Password
 
 #### OpenVPN server using piVPN
 
