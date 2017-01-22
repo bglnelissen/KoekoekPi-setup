@@ -213,6 +213,8 @@ In the future you can renew certificates doing a `certbot-auto renew`
 ~/bin/certbot-auto --standalone -d guu.st --email b.g.l.nelissen@gmail.com certonly
 ```
 
+Todo: add line to cron for automated updates.
+
 **Nginx**. We use the 'apt-get stretch branch' setup above to install the latest nginx.
 
 ```
