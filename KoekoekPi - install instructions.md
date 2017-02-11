@@ -618,6 +618,14 @@ sudo e2fsck
 
 #### Create backup image of the current system
 
+ToDo: clean trash and logs befor backup
+
+Shutdown the pi gracefully
+
+```
+sudo shutdown -t now
+```
+
 Insert the SD in the Mac and run dd with gzip to create a backup image.
 
 ```
