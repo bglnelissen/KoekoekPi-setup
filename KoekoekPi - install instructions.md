@@ -5,6 +5,7 @@ This script will get the KoekoekPi up and running from scratch
 #### Steps to take
 
 **Done**
+
 - Put Jessie on the sd-card and enable `ssh`
 - User setup
     - create 'normal' user
@@ -20,10 +21,11 @@ This script will get the KoekoekPi up and running from scratch
 - apt-get installs
 - mount USB drives at boot
 - transmission
-
-**ToDo**
 - openvpn
 - sickrage/sickbeard
+
+**ToDo**
+
 - Fix: `perl: warning: Setting locale failed.`
 
 #### Put Jessie on the sd-card and enable ssh
@@ -619,6 +621,13 @@ sudo e2fsck
 #### Create backup image of the current system
 
 ToDo: clean trash and logs befor backup
+
+```
+# clean downloaded apt-get packages
+sudo apt-get clean
+
+# clean log files
+```
 
 Shutdown the pi gracefully
 
