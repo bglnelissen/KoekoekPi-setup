@@ -728,7 +728,7 @@ sudo pv /dev/rdisk${DISK} | pigz -9 > KoekoekPi."$(date +%Y%m%d)".backup.img.gz
 #### Restore backup to SD
 
 ```
-IMGGZ="kiosk.20170213.backup.img.gz";
+IMGGZ="KoekoekPi.20170213.backup.img.gz";
 sudo date && diskutil list && \
 read -p "Enter the disk NUMBER you want to backup and press [ENTER]: " DISK && \
 diskutil unmountDisk /dev/disk${DISK} && \
