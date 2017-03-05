@@ -375,7 +375,8 @@ list:
 - vim, editor
 - git-core, git server
 - git, git client
-- htop, process monitor. #http://www.tecmint.com/install-htop-linux-process-monitoring-for-rhel-centos-fedora/
+- htop, process monitor.  #http://www.tecmint.com/install-htop-linux-process-monitoring-for-rhel-centos-fedora/
+- lynx, CLI webbrowser
 
 ```
 sudo apt-get -y update && sudo apt-get -y install \
@@ -383,7 +384,8 @@ sudo apt-get -y update && sudo apt-get -y install \
   git-core \
   git \
   htop \
-  iotop
+  iotop \
+  lynx
 
 ```
 
@@ -465,6 +467,14 @@ Setup ownCloud web-configuration and ownCloud should be up and running.
 # data [/media/KoekoekPi/owncloud]
 ```
 
+When your owncloud data is not empty, you want to rescan all your files.
+
+```
+cd /home/server/www/owncloud
+./occ files:scan --all
+./occ files:clean
+```
+
 #### phpMyAdmin
 
 Download phpMyAdmin and add it to 'www'
@@ -518,6 +528,7 @@ curl -L https://install.pivpn.io | bash
 # The install log is in /etc/pivpn.
 # Vague01 Rheineck91 Rheineck89
 ```
+
 
 #### Git server
 
@@ -588,16 +599,82 @@ sudo service transmission-daemon restart
 
 Don't forget to open the port (e.g. '51413' TCP)
 
----
+#### Citadel: Mail, Address book & Calendar server
 
-#### to fix
+Get to the latest and greatest before continuing and dependencies needed by Citadel.
 
 ```
-rsync -av --progress /Volumes/Mule/Backup* root@192.168.2.200:/volume1/Backups/
-
-# met echte progress bar
-rsync -av /Volumes/Mule/Backup\ Foto\'s /Volumes/KoekoekPhoto/ | pv -lep -s $(rsync -avn /Volumes/Mule/Backup\ Foto\'s /Volumes/KoekoekPhoto/ | awk 'NF' | wc -l)
+sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get -y install gettext
 ```
+
+Citadel is pre-configured so that IPv4 and IPv6 are set as the default transfer protocols.
+
+```
+# activate ipv6
+sudo modprobe ipv6
+```
+
+Install Citadel
+
+```
+# get a cup of coffee...
+# after a succesful install a setup will run, choose your setup.
+curl http://easyinstall.citadel.org/install | sh
+```
+
+    - Citadel will be installed to `/usr/local/citadel`
+    - WebCit will be installed to `/usr/local/webcit`
+    - supporting libraries will be installed to `/usr/local/ctdlsupport`
+    - The `setup` program will initialize (/usr/local/citadel/setup)
+    - http://www.citadel.org/doku.php/installation:getting_started
+
+Change the default ports away from 80 and 443, and reboot
+
+```
+# export WEBCIT_HTTPS_PORT='2000'
+# export WEBCIT_HTTP_PORT='2001'
+sudo vim /etc/default/webcit
+
+# reboot to change settings and start te service
+sudo reboot
+```
+
+Test the connection using `nc` as root
+
+```
+service nginx status
+service webcit status
+
+# as root
+( printf "ECHO test\nQUIT\n"; sleep 3 ) | nc 127.0.0.1 504
+```
+
+The rest of the setup goes through the web interface.
+Point your web browser at https://10.0.0.100:2000
+
+
+- Administration
+  - Edit site-wide configuration
+    - General:
+      - Fully qualified domain name: `guu.st`
+      - Geographic location of this system: `Netherlands`
+    - Settings:
+      - Server IP address: `*`
+      - XMPP: `-1`
+    - POP3
+      - POP3 listener port: `-1`
+      - POP3 over SLL port: `-1`
+  - Domain names and Internet mail configuration
+    - Local host aliases: `guu.st` add
+  - Add, change, delete user accounts
+    - Add user
+  - Restart now
+
+When you login as a user you can setup forward rules
+
+- Advanced
+  - View/edit server-side mail filters
+    - `if All forward to: example@mail.com`
 
 ---
 
