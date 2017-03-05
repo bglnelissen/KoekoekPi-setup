@@ -712,9 +712,26 @@ Shutdown the pi gracefully
 sudo shutdown -t now
 ```
 
-Insert the SD in the Mac and run dd with gzip to create a backup image.
+## Backup workflow
+
+Run this routine on your mac with the SD inserted.
+
+#### Create backup from SD
 
 ```
-sudo date && diskutil list && read -p "Enter the disk NUMBER you want to backup and press [ENTER]: " DISK && diskutil unmountDisk /dev/disk${DISK} && sudo pv /dev/rdisk${DISK} | pigz -9 > koekoekpi."$(date +%Y%m%d)".img.gz
+sudo date && diskutil list && \
+read -p "Enter the disk NUMBER you want to backup and press [ENTER]: " DISK && \
+diskutil unmountDisk /dev/disk${DISK} && \
+sudo pv /dev/rdisk${DISK} | pigz -9 > KoekoekPi."$(date +%Y%m%d)".backup.img.gz
 ```
 
+#### Restore backup to SD
+
+```
+IMGGZ="kiosk.20170213.backup.img.gz";
+sudo date && diskutil list && \
+read -p "Enter the disk NUMBER you want to backup and press [ENTER]: " DISK && \
+diskutil unmountDisk /dev/disk${DISK} && \
+gzip --decompress --stdout ${IMGGZ} | pv -s 16G | sudo dd of=/dev/rdisk${DISK} bs=100M && \
+diskutil unmountDisk /dev/disk${DISK}
+```
