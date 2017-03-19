@@ -676,9 +676,7 @@ When you login as a user you can setup forward rules
   - View/edit server-side mail filters
     - `if All forward to: example@mail.com`
 
----
-
-**Extra's**
+## Extra's
 
 #### Resource usage
 
@@ -694,6 +692,7 @@ Diskfailures do happen. For a clean guide check https://www.cyberciti.biz/tips/s
 # force checking of a drive
 sudo e2fsck
 ```
+## Backup workflow
 
 #### Create backup image of the current system
 
@@ -711,8 +710,6 @@ Shutdown the pi gracefully
 ```
 sudo shutdown -t now
 ```
-
-## Backup workflow
 
 Run this routine on your mac with the SD inserted.
 
