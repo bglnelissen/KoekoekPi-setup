@@ -5,6 +5,7 @@ This script will get the KoekoekPi up and running from scratch
 #### Steps to take
 
 **Done**
+
 - Put Jessie on the sd-card and enable `ssh`
 - User setup
     - create 'normal' user
@@ -20,10 +21,11 @@ This script will get the KoekoekPi up and running from scratch
 - apt-get installs
 - mount USB drives at boot
 - transmission
-
-**ToDo**
 - openvpn
 - sickrage/sickbeard
+
+**ToDo**
+
 - Fix: `perl: warning: Setting locale failed.`
 
 #### Put Jessie on the sd-card and enable ssh
@@ -687,9 +689,7 @@ When you login as a user you can setup forward rules
   - View/edit server-side mail filters
     - `if All forward to: example@mail.com`
 
----
-
-**Extra's**
+## Extra's
 
 #### Resource usage
 
@@ -705,6 +705,7 @@ Diskfailures do happen. For a clean guide check https://www.cyberciti.biz/tips/s
 # force checking of a drive
 sudo e2fsck
 ```
+## Backup workflow
 
 #### Update certificates
 
@@ -721,9 +722,39 @@ sudo service nginx start
 
 #### Create backup image of the current system
 
-Insert the SD in the Mac and run dd with gzip to create a backup image.
+ToDo: clean trash and logs befor backup
 
 ```
-sudo date && diskutil list && read -p "Enter the disk NUMBER you want to backup and press [ENTER]: " DISK && diskutil unmountDisk /dev/disk${DISK} && sudo pv /dev/rdisk${DISK} | pigz -9 > koekoekpi."$(date +%Y%m%d)".img.gz
+# clean downloaded apt-get packages
+sudo apt-get clean
+
+# clean log files
 ```
 
+Shutdown the pi gracefully
+
+```
+sudo shutdown -t now
+```
+
+Run this routine on your mac with the SD inserted.
+
+#### Create backup from SD
+
+```
+sudo date && diskutil list && \
+read -p "Enter the disk NUMBER you want to backup and press [ENTER]: " DISK && \
+diskutil unmountDisk /dev/disk${DISK} && \
+sudo pv /dev/rdisk${DISK} | pigz -9 > KoekoekPi."$(date +%Y%m%d)".backup.img.gz
+```
+
+#### Restore backup to SD
+
+```
+IMGGZ="KoekoekPi.20170213.backup.img.gz";
+sudo date && diskutil list && \
+read -p "Enter the disk NUMBER you want to backup and press [ENTER]: " DISK && \
+diskutil unmountDisk /dev/disk${DISK} && \
+gzip --decompress --stdout ${IMGGZ} | pv -s 16G | sudo dd of=/dev/rdisk${DISK} bs=100M && \
+diskutil unmountDisk /dev/disk${DISK}
+```
