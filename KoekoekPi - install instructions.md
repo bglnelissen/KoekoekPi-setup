@@ -115,6 +115,19 @@ ssh keys let you login without a password. Copy our local public key to the remo
 cat ~/.ssh/id_rsa.pub | (ssh bas@koekoekpi "cat >> ~/.ssh/authorized_keys")
 ```
 
+#### Set language
+
+Language setup stays a bit of a pain in the butt. Many non-working solutions can be found on the internets.
+
+Uncomment your languages and save your file.
+
+```
+# edit language file
+sudo vim /etc/locale.gen 
+# apply changes
+sudo /usr/sbin/locale-gen
+```
+
 #### Update system, install essentials and reboot
 
 Install updates and upgrades, also add packes for software you use a lot.
@@ -691,6 +704,19 @@ Diskfailures do happen. For a clean guide check https://www.cyberciti.biz/tips/s
 ```
 # force checking of a drive
 sudo e2fsck
+```
+
+#### Update certificates
+
+```
+# stop webserver to free the port for certbot
+sudo service nginx stop
+
+# run certbot in automated mode
+~/bin/certbot-auto --standalone -d guu.st --email b.g.l.nelissen@gmail.com certonly
+
+# start the webserver
+sudo service nginx start
 ```
 
 #### Create backup image of the current system
