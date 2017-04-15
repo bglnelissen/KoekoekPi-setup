@@ -729,7 +729,7 @@ IMGGZ="musicbox_v0.7.0RC4.img";
 sudo date && diskutil list && \
 read -p "Enter the disk NUMBER you want to backup and press [ENTER]: " DISK && \
 diskutil unmountDisk /dev/disk${DISK} && \
-cat "$IMGGZ" | pv -s "$(du -s "$IMGGZ" | cut -f 1)"K | sudo dd of=/dev/rdisk${DISK} bs=100M && \
+cat "$IMGGZ" | pv -s "$(du -sh "$IMGGZ" | cut -f 1)" | sudo dd of=/dev/rdisk${DISK} bs=100M && \
 diskutil unmountDisk /dev/disk${DISK}
 ```
 
