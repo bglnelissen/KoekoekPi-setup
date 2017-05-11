@@ -748,13 +748,26 @@ diskutil unmountDisk /dev/disk${DISK} && \
 sudo pv /dev/rdisk${DISK} | pigz -9 > KoekoekPi."$(date +%Y%m%d)".backup.img.gz
 ```
 
-#### Restore backup to SD
+#### Restore `.img` backup to SD
+
+```
+IMGGZ="musicbox_v0.7.0RC4.img";
+sudo date && diskutil list && \
+read -p "Enter the disk NUMBER you want to backup and press [ENTER]: " DISK && \
+diskutil unmountDisk /dev/disk${DISK} && \
+cat "$IMGGZ" | pv -s "$(du -s -B1 "$IMGGZ" | cut -f 1)" | sudo dd of=/dev/rdisk${DISK} bs=100M && \
+diskutil unmountDisk /dev/disk${DISK}
+```
+
+"$(du -sb "$INPUTFILE" | cut -f 1)"
+
+#### Restore `.gz` backup to SD
 
 ```
 IMGGZ="KoekoekPi.20170213.backup.img.gz";
 sudo date && diskutil list && \
 read -p "Enter the disk NUMBER you want to backup and press [ENTER]: " DISK && \
 diskutil unmountDisk /dev/disk${DISK} && \
-gzip --decompress --stdout ${IMGGZ} | pv -s 16G | sudo dd of=/dev/rdisk${DISK} bs=100M && \
+gzip --decompress --stdout ${IMGGZ} | pv -s "$(du -s -B1 "$IMGGZ" | cut -f 1)" | sudo dd of=/dev/rdisk${DISK} bs=100M && \
 diskutil unmountDisk /dev/disk${DISK}
 ```
