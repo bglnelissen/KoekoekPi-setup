@@ -705,6 +705,15 @@ Diskfailures do happen. For a clean guide check https://www.cyberciti.biz/tips/s
 # force checking of a drive
 sudo e2fsck
 ```
+
+#### Network monitoring tools
+
+A set of monitoring tools
+
+```
+sudo apt-get install -y ntop nload iftop iptraf nethogs bmon slurm tcptrack vnstat cbm
+```
+
 ## Backup workflow
 
 #### Update certificates
