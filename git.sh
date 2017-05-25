@@ -7,6 +7,7 @@ FILEFULL="$(echo "$(cd "$(dirname "$FILE")"; pwd)"/"$(basename "$FILE")")" # ful
 DIRNAME="$(dirname "$FILEFULL")"      # dirname
 
 # start
+clear
 echo "Running: ""$FILE"
 
 # change to working dir
