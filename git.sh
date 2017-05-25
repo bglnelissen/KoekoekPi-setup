@@ -1,12 +1,21 @@
 #!/bin/bash
 # b. nelissen
 
-# set workingdir
+# set file variables
 FILE="$0"
 FILEFULL="$(echo "$(cd "$(dirname "$FILE")"; pwd)"/"$(basename "$FILE")")" # full path $FULL
 DIRNAME="$(dirname "$FILEFULL")"      # dirname
+
+# start
+echo "Running: ""$FILE"
+
+# change to working dir
 cd "$DIRNAME"
-echo "Current working directory: ""$(pwd)"
+if [ 0 == $? ]; then
+  echo "Succes: changed working dir to: ""$(pwd)"; echo "-------"; echo
+else
+  echo "FAIL: could not change working directory"; exit 1
+fi
 
 # easy GIT upload script for KoekoekPi
 commitmessage="$@"
