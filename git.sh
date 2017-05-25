@@ -2,6 +2,7 @@
 # b. nelissen
 
 # set file variables
+CURRENTDIR="$(pwd)"
 FILE="$0"
 FILEFULL="$(echo "$(cd "$(dirname "$FILE")"; pwd)"/"$(basename "$FILE")")" # full path $FULL
 DIRNAME="$(dirname "$FILEFULL")"      # dirname
@@ -66,6 +67,14 @@ if [ 0 == $? ]; then
   echo "Succes: git push pi master"; echo "-------"; echo
 else
   echo "FAIL: git push pi master"; exit 1
+fi
+
+# change working dir back to previous one
+cd "$CURRENTDIR"
+if [ 0 == $? ]; then
+  echo "Succes: changed working dir to: ""$(pwd)"; echo "-------"; echo
+else
+  echo "FAIL: could not change working directory"; exit 1
 fi
 
 # fin
