@@ -1,6 +1,13 @@
 #!/bin/bash
 # b. nelissen
 
+# set workingdir
+FILE="$0"
+FILEFULL="$(echo "$(cd "$(dirname "$FILE")"; pwd)"/"$(basename "$FILE")")" # full path $FULL
+DIRNAME="$(dirname "$FILEFULL")"      # dirname
+cd "$DIRNAME"
+echo "Current working directory: ""$(pwd)"
+
 # easy GIT upload script for KoekoekPi
 commitmessage="$@"
 
