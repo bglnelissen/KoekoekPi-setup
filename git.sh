@@ -72,7 +72,7 @@ fi
 # change working dir back to previous one
 cd "$CURRENTDIR"
 if [ 0 == $? ]; then
-  echo "Succes: changed working dir to: ""$(pwd)"; echo "-------"; echo
+  echo "Succes: changed working dir back to: ""$(pwd)"; echo "-------"; echo
 else
   echo "FAIL: could not change working directory"; exit 1
 fi
