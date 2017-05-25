@@ -1,6 +1,13 @@
 #!/bin/bash
 # b. nelissen
 
+# example: find . -name "git.sh" -exec {} "update script"  \;
+
+# memo:
+# add the dir on the server: ~/git/project.git
+# add the server as a remote: git remote add pi "bas@guu.st:git/project.git"
+# do the first commit manually: git add . ; git commit -a -m "initial commit" ; git push pi master
+
 # set file variables
 CURRENTDIR="$(pwd)"
 FILE="$0"
@@ -57,16 +64,12 @@ git commit -a -m "$commitmessage"
 if [ 0 == $? ]; then
   echo "Succes: git commit -a -m "$commitmessage""; echo "-------"; echo
   git push pi master
-else
-  echo "FAIL: git commit -a -m "$commitmessage""; exit 1
 fi
 
 # git push
 git push pi master
 if [ 0 == $? ]; then
   echo "Succes: git push pi master"; echo "-------"; echo
-else
-  echo "FAIL: git push pi master"; exit 1
 fi
 
 # change working dir back to previous one
