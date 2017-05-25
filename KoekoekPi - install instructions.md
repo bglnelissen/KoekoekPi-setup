@@ -708,10 +708,23 @@ sudo e2fsck
 
 #### Network monitoring tools
 
-A set of monitoring tools
+A set of monitoring tools. For immediate monitoring you can use `iftop`. This will show you the currently active connections and the bandwidth they are using. Once you've identified a high traffic connection, find the local port number and use netstat to find which process the connection belongs to.
 
 ```
-sudo apt-get install -y ntop nload iftop iptraf nethogs bmon slurm tcptrack vnstat cbm
+sudo netstat -tpn | grep 12345
+```
+
+For longer term monitoring I would suggest something like `darkstat` (example: `darkstat -i eth0 -p 82`). This can give you a breakdown per host and port which might allow you to figure out what the traffic is related to.
+
+Or, use' `iftop`, press t, then shift P. Copy the ip:port and to find the application run:
+
+```
+netstat -tnp | grep 10.0.0.100:51413
+```
+
+Install the tools you need:
+```
+sudo apt-get install -y ntop nload iftop iptraf nethogs bmon slurm tcptrack vnstat darkstat cbm
 ```
 
 ## Backup workflow
