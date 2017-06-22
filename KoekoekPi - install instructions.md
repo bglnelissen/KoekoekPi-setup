@@ -575,10 +575,21 @@ Setup
 # create tmp/download dir
 sudo -u server mkdir -p /media/KoekoekPi/Torrent/Complete
 sudo -u server mkdir -p /media/KoekoekPi/Torrent/Incomplete
+```
 
+```
 # stop transmission-daemon before changing settings
 sudo service transmission-daemon stop
+```
+Edit the settings file:
 
+```
+sudo vim /etc/transmission-daemon/settings.json
+```
+
+Things to change:
+
+```
 # change tmp/download dir in settings file
 #   "blocklist-enabled": true, 
 #   "blocklist-url": "http://list.iblocklist.com/?list=bt_level1",
@@ -591,7 +602,7 @@ sudo vim /var/lib/transmission-daemon/info/settings.json
 # change the user:group that runs the transmission-deamon
 #   USER=server:server
 # this might not work as expected... TODO
-sudo vim /etc/init.d/transmission-daemon
+setuid 
 
 # start transmission-daemon
 sudo service transmission-daemon restart
@@ -725,7 +736,7 @@ sudo pv /dev/rdisk${DISK} | pigz -9 > KoekoekPi."$(date +%Y%m%d)".backup.img.gz
 #### Restore `.img` backup to SD
 
 ```
-IMGGZ="musicbox_v0.7.0RC4.img";
+IMGGZ="KoekoekPi.20170213.backup.img";
 sudo date && diskutil list && \
 read -p "Enter the disk NUMBER you want to backup and press [ENTER]: " DISK && \
 diskutil unmountDisk /dev/disk${DISK} && \
