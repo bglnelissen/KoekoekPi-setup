@@ -2,9 +2,7 @@
 
 This script will get the KoekoekPi up and running from scratch
 
-#### Steps to take
-
-**Done**
+#### Steps
 
 - Put Jessie on the sd-card and enable `ssh`
 - User setup
@@ -21,12 +19,11 @@ This script will get the KoekoekPi up and running from scratch
 - apt-get installs
 - mount USB drives at boot
 - transmission
+- git
 - openvpn
 - sickrage/sickbeard
-
-**ToDo**
-
-- Fix: `perl: warning: Setting locale failed.`
+- Citadel: Mail, Address book & Calendar server
+- wondershape
 
 #### Put Jessie on the sd-card and enable ssh
 
@@ -700,6 +697,48 @@ When you login as a user you can setup forward rules
   - View/edit server-side mail filters
     - `if All forward to: example@mail.com`
 
+#### Wondershaper
+
+Wonder Shaper uses `iproute` to *shape* traffic and limit the up and download speeds. My experience is that full bandwith upload traffic to the pi can choke my whole LAN. Therefor I throttle my Pi to keep the LAN from slowing down.
+
+```
+sudo apt-get -y install wondershaper speedtest-cli
+```
+
+Check your interfaces with `ifconfig`, eg. eth0.
+
+Test an appropriate setting, like down 12000kb/s and up 1600kb/s
+
+```
+# test the speed befor throttle
+
+# sudo wondershaper eth1 downspeed upspeed
+sudo wondershaper eth0 12000 1600
+# to undo wondershaper run
+# wondershaper clear eth0
+
+# test the speed after throttle
+curl -s  https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -
+
+```
+
+Set the upload and download speeds over a reboot. The following makes shure the settings apply when the network interface comes up, and the settings are cleaned when the network interface goes down.
+
+```
+# backup current network settings
+sudo cp -v /etc/network/interfaces /root/interfaces."$(date +%Y%m%d%H%M)".bak
+```
+
+```
+# add the following to /etc/network/interfaces under eth0
+#	up /sbin/wondershaper eth0 12000 1600
+#	down /sbin/wondershaper clear eth0
+sudo -s vim /etc/network/interfaces
+```
+
+
+
+
 ## Extra's
 
 #### Resource usage
@@ -734,8 +773,20 @@ netstat -tnp | grep 10.0.0.100:51413
 ```
 
 Install the tools you need:
+
 ```
-sudo apt-get install -y ntop nload iftop iptraf nethogs bmon slurm tcptrack vnstat darkstat cbm
+sudo apt-get install -y \
+ntop \
+nload \
+iftop \
+iptraf \
+nethogs \
+bmon \
+slurm \
+tcptrack \
+vnstat \
+darkstat \
+cbm
 ```
 
 ## Backup workflow
