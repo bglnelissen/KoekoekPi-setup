@@ -697,6 +697,22 @@ When you login as a user you can setup forward rules
   - View/edit server-side mail filters
     - `if All forward to: example@mail.com`
 
+Open port 993 in the firewall/router. This is the port you need to use if you want to connect using IMAP securely.
+
+Setup mail (via IMAP) on the client side:
+
+- Email: name@guu.st
+- Host name guu.st
+- Username: name
+- Password: ********
+- SMTP: No Server
+- Use SSL: yes
+- Authentication: password
+- IMAP Path Prefix: /
+- Server Port: 993
+
+*Fix mail sending via SMTP.*
+
 #### Wondershaper
 
 Wonder Shaper uses `iproute` to *shape* traffic and limit the up and download speeds. My experience is that full bandwith upload traffic to the pi can choke my whole LAN. Therefor I throttle my Pi to keep the LAN from slowing down.
