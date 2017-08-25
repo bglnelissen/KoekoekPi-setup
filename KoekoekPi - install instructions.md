@@ -773,6 +773,13 @@ To see if DenyHosts is running. While denyhosts is running it will update the `/
 ps -ax | grep [d]enyhosts
 ```
 
+Parse the `/etc/hosts.deny` file to see where these lame scriptkiddies come from
+
+```
+for i in $(tail -n +17 /etc/hosts.deny | awk '{print $2}');do printf "$i "; geoiplookup $i;done
+```
+
+
 You can set `/etc/hosts.allow` to always allow local login attempts:
 
 ```
