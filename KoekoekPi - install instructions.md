@@ -23,7 +23,7 @@ This script will get the KoekoekPi up and running from scratch
 - openvpn
 - sickrage/sickbeard
 - Citadel: Mail, Address book & Calendar server
-- wondershape
+- wondershaper
 
 #### Put Jessie on the sd-card and enable ssh
 
@@ -622,7 +622,7 @@ Don't forget to open the port (e.g. '51413' TCP)
 
 #### Citadel: Mail, Address book & Calendar server
 
-Get to the latest and greatest before continuing and dependencies needed by Citadel.
+Get to the latest and greatest before continuing and dependencies needed by Citadel. Choose IMAP for receiving, and SMTP for sending.
 
 ```
 sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get -y install gettext
@@ -649,7 +649,7 @@ curl http://easyinstall.citadel.org/install | sh
     - The `setup` program will initialize (/usr/local/citadel/setup)
     - http://www.citadel.org/doku.php/installation:getting_started
 
-Change the default ports away from 80 and 443, and reboot
+Change the default ports to acces Citadel web environment away from 80 and 443, and reboot
 
 ```
 # export WEBCIT_HTTPS_PORT='2000'
@@ -697,21 +697,22 @@ When you login as a user you can setup forward rules
   - View/edit server-side mail filters
     - `if All forward to: example@mail.com`
 
-Open port 993 in the firewall/router. This is the port you need to use if you want to connect using IMAP securely.
+Open ports in your router. SMTP is used for relaying messages between client/server, open port 25 and 465 TCP in the firewall/router. IMAP for accessing mail via your client, open port 993 TCP in the firewall/router.
 
-Setup mail (via IMAP) on the client side:
-
-- Email: name@guu.st
-- Host name guu.st
-- Username: name
-- Password: ********
-- SMTP: No Server
-- Use SSL: yes
-- Authentication: password
-- IMAP Path Prefix: /
-- Server Port: 993
-
-*Fix mail sending via SMTP.*
+Setup for the iPhone:
+1. Settings, Mail, Accounts, Add Account, Other...
+2. Add Mail account
+3. Name, name@guu.st, password, Guu.st mail
+3. Incoming mail server
+  - Host name: guu.st
+  - Username: name
+  - Password: password
+4. Outgoing mail server
+  - Host name: guu.st
+  - Username: name
+  - Password: password
+5. Verifying account takes a few minutes, patience.
+6. Test your settings in Mail, you should be able to send/receive email from guu.st
 
 #### Wondershaper
 
@@ -752,7 +753,35 @@ sudo cp -v /etc/network/interfaces /root/interfaces."$(date +%Y%m%d%H%M)".bak
 sudo -s vim /etc/network/interfaces
 ```
 
+#### Deny Hosts
 
+DenyHosts is a script intended to be run by Linux system administrators to help thwart SSH server attacks (also known as dictionary based attacks and brute force attacks).
+When run for the first time, DenyHosts will create a work directory. The work directory will ultimately store the data collected and the files are in a human readable format, for each editing, if necessary.
+DenyHosts then processes the sshd server log (typically, this is /var/log/secure, /var/log/auth.log, etc) and determines which hosts have unsuccessfully attempted to gain access to the ssh server. Additionally, it notes the user and whether or not that user is root, otherwise valid (eg. has a system account) or invalid (eg. does not have a system account).
+
+When DenyHosts determines that a given host has attempted to login using a non-existent user account a configurable number of attempts, DenyHosts will add that host to the /etc/hosts.deny file. This will prevent that host from contacting your sshd server again.
+
+Also, DenyHosts will note any successful logins that occurred by a host that has exceeded the deny_threshold. These are known as suspicious logins and should be investigated further by the system admin.
+
+```
+sudo apt-get install denyhosts
+```
+
+To see if DenyHosts is running. While denyhosts is running it will update the `/etc/hosts.deny` file. DenyHosts runs in the background.
+
+```
+ps -ax | grep [d]enyhosts
+```
+
+You can set `/etc/hosts.allow` to always allow local login attempts:
+
+```
+# add the following lines, the last line must be blanc!
+# ALL : 192.168.,10.0.
+# 
+
+sudo vim /etc/hosts.allow
+```
 
 
 ## Extra's
@@ -788,7 +817,7 @@ Or, use' `iftop`, press t, then shift P. Copy the ip:port and to find the applic
 netstat -tnp | grep 10.0.0.100:51413
 ```
 
-Install the tools you need:
+Install the tools you want:
 
 ```
 sudo apt-get install -y \
@@ -802,8 +831,12 @@ slurm \
 tcptrack \
 vnstat \
 darkstat \
-cbm
+cbm \
+geoip-bin
 ```
+
+`geoip` finds the geographic location of an ip address.
+`lastb -a | more` to see the login attemps on the server (/var/log/btmp)
 
 ## Backup workflow
 
@@ -822,9 +855,16 @@ sudo service nginx start
 
 #### Create backup image of the current system
 
-ToDo: clean trash and logs befor backup
+ToDo: clean trash and logs befor backup:
 
 ```
+# remove all archived logs and numbered logs
+# why not remove all of them?
+# rm /var/log/*
+# rm /var/log/*.gz
+# rm /var/log/*.1
+```
+
 # clean downloaded apt-get packages
 sudo apt-get clean
 
