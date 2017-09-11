@@ -859,8 +859,6 @@ cat "$IMGGZ" | pv -s "$(du -s -B1 "$IMGGZ" | cut -f 1)" | sudo dd of=/dev/rdisk$
 diskutil unmountDisk /dev/disk${DISK}
 ```
 
-"$(du -sb "$INPUTFILE" | cut -f 1)"
-
 #### Restore `.gz` backup to SD
 
 ```
