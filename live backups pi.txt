@@ -1,0 +1,9 @@
+You can use a Fuji SDCard Reader in the USB on a RPi. That's been the best £8 I've spent.
+
+dd if=/dev/mmcblk0 of=/dev/sdb bs=1M 
+
+it's a "fuzzy" copy so may need a fsck when you boot that cloned card. If you 'touch /boot/forcefsck' before doing that copy then when it boots Raspbian will do an automagic fsck. Use rm /boot/forcefsck when you're done with the copy.
+
+I've also done a dd if=/dev/mmcblk0 of=/mnt/NAS/RaspPi/raspbian.ddmmyyy.img bs=1M and left that running overnight (because it's slow but my machine is dormant (less fuzzy)). 
+
+Once you have an *.img then viewtopic.php?f=91&t=58069 lets you resize it down to the minimum size needed (in my case using DeanC's script made 32GB shrink to 5GB).
