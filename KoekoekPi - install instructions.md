@@ -700,6 +700,7 @@ When you login as a user you can setup forward rules
 Open ports in your router. SMTP is used for relaying messages between client/server, open port 25 and 465 TCP in the firewall/router. IMAP for accessing mail via your client, open port 993 TCP in the firewall/router.
 
 Setup for the iPhone:
+
 1. Settings, Mail, Accounts, Add Account, Other...
 2. Add Mail account
 3. Name, name@guu.st, password, Guu.st mail
@@ -753,7 +754,7 @@ sudo cp -v /etc/network/interfaces /root/interfaces."$(date +%Y%m%d%H%M)".bak
 sudo -s vim /etc/network/interfaces
 ```
 
-#### Deny Hosts
+#### DenyHosts script
 
 DenyHosts is a script intended to be run by Linux system administrators to help thwart SSH server attacks (also known as dictionary based attacks and brute force attacks).
 When run for the first time, DenyHosts will create a work directory. The work directory will ultimately store the data collected and the files are in a human readable format, for each editing, if necessary.
